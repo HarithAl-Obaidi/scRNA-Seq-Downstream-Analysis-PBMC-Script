@@ -1,5 +1,5 @@
 library("Seurat")
-filtered.counts <- Read10X_h5("/home/harith/scRNASeq/PBMC_scRNASeq/SC3pv3_GEX_Human_PBMC_filtered_feature_bc_matrix.h5", use.names = TRUE, unique.features = TRUE)
+filtered.counts <- Read10X_h5("~/scRNASeq/PBMC_scRNASeq/SC3pv3_GEX_Human_PBMC_filtered_feature_bc_matrix.h5", use.names = TRUE, unique.features = TRUE)
 pbmc <- CreateSeuratObject(counts = filtered.counts, project = "Human PBMC", min.cells = 3, min.features = 200)
 
 rm(filtered.counts)
@@ -60,7 +60,7 @@ FeaturePlot(pbmc, features = "percent.MT")
 FeaturePlot(pbmc, features = "nCount_RNA")
 FeaturePlot(pbmc, features = "nFeature_RNA")
 
-markers <- read.csv("/home/harith/scRNASeq/PBMC_scRNASeq/markers_PBMC.csv")
+markers <- read.csv("~/scRNASeq/PBMC_scRNASeq/markers_PBMC.csv")
 unique_cells <- unique(markers$Cell.name)
 marker_list <- list()#
 for (cell in unique_cells) {
@@ -137,15 +137,3 @@ pbmc$curated_celltypes[pbmc$RNA_snn_res.0.5 == '12'] <- "Monocyte derived dendri
 pbmc$curated_celltypes[pbmc$RNA_snn_res.0.5 == '13'] <- "Megakaryocyte progenitor cell"
 
 DimPlot(pbmc, group.by = "curated_celltypes", label = T)
-
-##################################################
-
-#Celldex and SingleR
-
-#BiocManager::install("celldex")
-#BiocManager::install("SingleR")
-#imm.reference <- celldex::DatabaseImmuneCellExpressionData()
-#pbmc_data_mat <- GetAssayData(pbmc, assay = "RNA", slot = "Data")
-#mapping <- SingleR::SingleR(test = pbmc_data_mat, ref = imm.reference, labels = imm.reference$label.main)
-#pbmc[["SingleR_labels"]] <- mapping$labels
-#DimPlot(pbmc, group.by = "SingleR_labels", label = T)
